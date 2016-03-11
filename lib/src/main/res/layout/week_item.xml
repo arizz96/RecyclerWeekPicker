@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:weightSum="7"
+    android:fitsSystemWindows="true"
+    android:clickable="true"
+    android:focusable="true">
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+    <include
+        android:id="@+id/element_booking_when_day_Sa"
+        layout="@layout/day_item"/>
+
+</LinearLayout>
