@@ -1,1 +1,1 @@
-include ':app', ':recyclerweekpicker'
+include ':app', ':lib'
