@@ -12,8 +12,8 @@
     tools:context="com.java.arizz96.recyclerweekpicker_library.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <com.java.arizz96.recyclerweekpicker.widget.RecyclerWeekPicker
+        android:id="@+id/week_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

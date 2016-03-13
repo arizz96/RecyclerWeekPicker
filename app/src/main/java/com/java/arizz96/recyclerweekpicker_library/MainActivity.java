@@ -5,9 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.java.arizz96.recyclerweekpicker.widget.RecyclerWeekPicker;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+
+        RecyclerWeekPicker weekPicker = (RecyclerWeekPicker) findViewById(R.id.week_picker);
+        weekPicker.setOnDaySelectedListener(new RecyclerWeekPicker.onDaySelected() {
+            @Override
+            public void onSelected(Calendar day) {
+                Log.d("main", String.format("%d %d %d", day.get(Calendar.YEAR),day.get(Calendar.MONTH) + 1, day.get(Calendar.DAY_OF_MONTH)));
             }
         });
     }
