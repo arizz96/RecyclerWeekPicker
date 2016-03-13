@@ -4,8 +4,11 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    android:layout_weight="1">
+    android:layout_weight="1"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="#FFF">
 
     <RelativeLayout
         android:id="@+id/item_day_layout"
@@ -14,14 +17,17 @@
 
         <TextView
             android:id="@+id/item_day_nameTxv"
-            android:layout_width="18dp"
+            android:layout_width="match_parent"
             android:layout_height="29dp"
             android:layout_centerInParent="true"
 
             android:text="L"
             android:textSize="12sp"
             android:gravity="center"
-            android:textAlignment="gravity"/>
+            android:textAlignment="gravity"
+            android:singleLine="true"
+            android:lines="1"
+            android:ellipsize="end"/>
 
     </RelativeLayout>
 
