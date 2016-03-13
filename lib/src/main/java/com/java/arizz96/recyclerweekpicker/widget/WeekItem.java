@@ -5,31 +5,41 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
+import android.view.View;
 import android.widget.LinearLayout;
+
+import java.util.Calendar;
 
 /**
  * Created by arizz on 11/03/2016.
  */
-public class WeekItem extends LinearLayout {
+public class WeekItem {
 
     private int[] mWeekDays;
+    private Calendar mFirstDayCalendar;
     private SparseBooleanArray mDisabledDays;
+    private String mMonthName;
 
-    public WeekItem(Context context) {
-        super(context);
+    public WeekItem(Calendar firstDay) {
+        mFirstDayCalendar = (Calendar) firstDay.clone();
+        Calendar lastDay = (Calendar) mFirstDayCalendar.clone();
+        lastDay.add(Calendar.DAY_OF_MONTH, 6);
+        String monthName = Utils.getMonthName(mFirstDayCalendar);
+        String nextMonthName = Utils.getMonthName(lastDay);
+        if(monthName.compareTo(nextMonthName) != 0)
+            monthName = String.format("%s / %s", monthName, nextMonthName);
+
+        mWeekDays = Utils.calculateWeekDays(mFirstDayCalendar.get(Calendar.DAY_OF_MONTH), lastDay.get(Calendar.DAY_OF_MONTH));
+        mMonthName = monthName;
+        mDisabledDays = new SparseBooleanArray(7);
     }
 
-    public WeekItem(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public int getDayNumAtIndex(int index) {
+        return mWeekDays[index];
     }
 
-    public WeekItem(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public WeekItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public String getDayNameAtIndex(int index, String format) {
+        return Utils.getDayName(index, format);
     }
 
     public int getFirstDay() {
@@ -42,5 +52,28 @@ public class WeekItem extends LinearLayout {
 
     public boolean isEnabledAtDay(int day) {
         return mDisabledDays.get(day);
+    }
+
+    public void setEnabledAtDay(int day, boolean state) {
+        mDisabledDays.put(day, state);
+    }
+
+    public String getMonthName() {
+        return mMonthName;
+    }
+
+    public Calendar getCalendarByOffset(int offset) {
+        Calendar calendar = (Calendar) mFirstDayCalendar.clone();
+        calendar.add(Calendar.DAY_OF_MONTH, offset);
+        return calendar;
+    }
+
+    public Calendar getCalendarByDay(int day) {
+        int offset = -1;
+        for (int i = 0; i < 7 && offset == -1; i++) {
+            if(mWeekDays[i] == day)
+                offset = i;
+        }
+        return getCalendarByOffset(offset);
     }
 }
