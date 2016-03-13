@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/week_item_day_layout"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="7"
-    android:fitsSystemWindows="true"
-    android:clickable="true"
-    android:focusable="true">
+    android:weightSum="7">
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Mo"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Tu"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_We"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Th"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Fr"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Sa"
         layout="@layout/day_item"/>
 
     <include
-        android:id="@+id/element_booking_when_day_Sa"
+        android:id="@+id/week_item_day_Su"
         layout="@layout/day_item"/>
 
 </LinearLayout>
