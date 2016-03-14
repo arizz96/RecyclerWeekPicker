@@ -21,6 +21,7 @@ public class Utils {
         firstDay.set(Calendar.HOUR_OF_DAY, 0);
         firstDay.set(Calendar.MINUTE, 0);
         firstDay.set(Calendar.SECOND, 0);
+        firstDay.set(Calendar.MILLISECOND, 0);
         // reset first day to first of week
         firstDay.add(Calendar.DAY_OF_MONTH, -firstDay.getFirstDayOfWeek() + 1);
 
@@ -39,6 +40,7 @@ public class Utils {
         firstDay.set(Calendar.HOUR_OF_DAY, 0);
         firstDay.set(Calendar.MINUTE, 0);
         firstDay.set(Calendar.SECOND, 0);
+        firstDay.set(Calendar.MILLISECOND, 0);
         // reset first day to first of week
         setCalendarToFirstDayOfWeek(firstDay);
 
