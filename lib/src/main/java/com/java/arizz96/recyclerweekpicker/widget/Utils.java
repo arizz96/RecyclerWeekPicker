@@ -23,14 +23,57 @@ public class Utils {
         firstDay.add(Calendar.DAY_OF_MONTH, -firstDay.getFirstDayOfWeek() + 1);
 
         for (int i = 0; i < 4; i++) {
-            WeekItem item = new WeekItem(firstDay);
-            weekItems.add(item);
-
+            weekItems.add(getWeekForDay(firstDay));
             firstDay.add(Calendar.WEEK_OF_MONTH, 1);
         }
 
 
         return weekItems;
+    }
+
+    public static WeekItem getWeekForDay(Calendar day) {
+        Calendar firstDay = (Calendar) day.clone();
+        // set Calendar to first day of month
+        firstDay.set(Calendar.HOUR_OF_DAY, 0);
+        firstDay.set(Calendar.MINUTE, 0);
+        firstDay.set(Calendar.SECOND, 0);
+        // reset first day to first of week
+        firstDay.add(Calendar.DAY_OF_MONTH, -firstDay.getFirstDayOfWeek() + 1);
+
+        return new WeekItem(firstDay);
+    }
+
+    public static WeekItem getPreviousWeekForDay(Calendar day) {
+        Calendar firstDay = (Calendar) day.clone();
+        firstDay.add(Calendar.WEEK_OF_YEAR, -1);
+        return getWeekForDay(firstDay);
+    }
+
+    public static ArrayList<WeekItem> getPreviousWeeksForDay(Calendar day, int count) {
+        ArrayList<WeekItem> items = new ArrayList<>(count);
+        Calendar firstDay = (Calendar) day.clone();
+        firstDay.add(Calendar.WEEK_OF_YEAR, -count);
+        for (int i = 0; i < count; i++) {
+            items.add(getWeekForDay(firstDay));
+            firstDay.add(Calendar.WEEK_OF_YEAR, 1);
+        }
+        return items;
+    }
+
+    public static WeekItem getNextWeekForDay(Calendar day) {
+        Calendar firstDay = (Calendar) day.clone();
+        firstDay.add(Calendar.WEEK_OF_YEAR, 1);
+        return getWeekForDay(firstDay);
+    }
+
+    public static ArrayList<WeekItem> getNextWeeksForDay(Calendar day, int count) {
+        ArrayList<WeekItem> items = new ArrayList<>(count);
+        Calendar firstDay = (Calendar) day.clone();
+        for (int i = 0; i < count; i++) {
+            firstDay.add(Calendar.WEEK_OF_YEAR, 1);
+            items.add(getWeekForDay(firstDay));
+        }
+        return items;
     }
 
     public static int[] calculateWeekDays(int first_day, int last_day){
