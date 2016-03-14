@@ -21,6 +21,8 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
     private ArrayList<WeekItem> mWeekList;
     private Context mContext;
     private clickInterface mDaySelected;
+    private static int lastSelectedDay = -1;
+    private static int lastSelectedWeek = -1;
 
     public static interface clickInterface {
         void onClick(Calendar calendar);
@@ -47,10 +49,32 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
                 @Override
                 public void onClick(View view) {
                     mDaySelected.onClick(mWeekList.get(position).getCalendarByOffset(offset));
+                    toggleSelection(position, offset);
                 }
             });
             holder.mWeekDaysNum[i].setText(mWeekList.get(position).getDayNumAtIndex(i) + "");
             holder.mWeekDays[i].setText(mWeekList.get(position).getDayNameAtIndex(i, "E"));
+
+            if(mWeekList.get(position).getSelectedIndex() == i) {
+                holder.mWeekDaysNum[i].setBackgroundResource(R.drawable.day_item_num_bg);
+                holder.mWeekDays[i].setBackgroundResource(R.drawable.day_item_name_bg);
+            } else {
+                holder.mWeekDaysNum[i].setBackgroundResource(0);
+                holder.mWeekDays[i].setBackgroundResource(0);
+            }
+        }
+    }
+
+    public void toggleSelection(int week, int day) {
+        if(mWeekList.get(week).isEnabledAtIndex(day)) {
+            if(lastSelectedDay != -1 && lastSelectedWeek != -1) {
+                mWeekList.get(lastSelectedWeek).resetSelectedDay();
+                notifyItemChanged(lastSelectedWeek);
+            }
+            mWeekList.get(week).setSelectedIndex(day);
+            lastSelectedDay = day;
+            lastSelectedWeek = week;
+            notifyItemChanged(week);
         }
     }
 
