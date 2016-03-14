@@ -83,6 +83,34 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         return mWeekList.size();
     }
 
+    public void addPreviousWeek() {
+        WeekItem week = Utils.getPreviousWeekForDay(mWeekList.get(0).getCalendarByOffset(0));
+        mWeekList.add(0, week);
+        notifyItemInserted(0);
+    }
+
+    public void addNextWeek() {
+        WeekItem week = Utils.getPreviousWeekForDay(mWeekList.get(getItemCount() - 1).getCalendarByOffset(6));
+        mWeekList.add(week);
+        notifyItemInserted(getItemCount() - 1);
+    }
+
+    public void addPreviousWeeks(int count) {
+        ArrayList<WeekItem> weeks = Utils.getPreviousWeeksForDay(mWeekList.get(0).getCalendarByOffset(0), count);
+        for (int i = 0; i < weeks.size(); i++) {
+            mWeekList.add(0, weeks.get(weeks.size() - 1 - i));
+            notifyItemInserted(0);
+        }
+    }
+
+    public void addNextWeeks(int count) {
+        ArrayList<WeekItem> weeks = Utils.getNextWeeksForDay(mWeekList.get(getItemCount() - 1).getCalendarByOffset(6), count);
+        for (int i = 0; i < weeks.size(); i++) {
+            mWeekList.add(weeks.get(i));
+            notifyItemInserted(getItemCount() - 1);
+        }
+    }
+
     public String getMonthNameForWeek(int weekNum) {
         return mWeekList.get(weekNum).getMonthName();
     }
