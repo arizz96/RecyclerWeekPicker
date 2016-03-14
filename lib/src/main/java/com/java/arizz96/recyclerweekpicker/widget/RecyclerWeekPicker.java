@@ -22,6 +22,7 @@ public class RecyclerWeekPicker extends RelativeLayout {
     private TextView mMonthTxv;
     private RecyclerViewPager mWeekPickerRvp;
     private onDaySelected mDaySelected;
+    private Calendar mSelectedDay;
 
     public static interface onDaySelected {
         void onSelected(Calendar day);
@@ -84,5 +85,15 @@ public class RecyclerWeekPicker extends RelativeLayout {
             };
         else
             return mDaySelected;
+    }
+
+    public Calendar getSelectedDay() {
+        return mSelectedDay;
+    }
+
+    public void setSelectedDay(Calendar day) {
+        mSelectedDay = day;
+        RecyclerWeekPickerAdapter adapter = (RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter();
+        //adapter.
     }
 }
