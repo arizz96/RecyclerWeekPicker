@@ -43,6 +43,12 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        Calendar currentDay = Calendar.getInstance();
+        currentDay.set(Calendar.HOUR_OF_DAY, 0);
+        currentDay.set(Calendar.MINUTE, 0);
+        currentDay.set(Calendar.SECOND, 0);
+        currentDay.set(Calendar.MILLISECOND, 0);
+
         for(int i = 0; i < 7; i++){
             final int offset = i;
             holder.mDayView[i].setOnClickListener(new View.OnClickListener() {
@@ -62,6 +68,9 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
                 holder.mWeekDaysNum[i].setBackgroundResource(0);
                 holder.mWeekDays[i].setBackgroundResource(0);
             }
+
+            if(mWeekList.get(position).getCalendarByOffset(i).compareTo(currentDay) == 0)
+                holder.mWeekDays[i].setBackgroundResource(R.drawable.day_item_name_current_bg);
         }
     }
 
