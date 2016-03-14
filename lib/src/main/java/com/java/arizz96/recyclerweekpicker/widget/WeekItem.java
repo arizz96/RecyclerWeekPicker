@@ -52,11 +52,19 @@ public class WeekItem {
     }
 
     public boolean isEnabledAtDay(int day) {
-        return mDisabledDays.get(day);
+        return mDisabledDays.get(day, true);
+    }
+
+    public boolean isEnabledAtIndex(int index) {
+        return isEnabledAtDay(mWeekDays[index]);
     }
 
     public void setEnabledAtDay(int day, boolean state) {
         mDisabledDays.put(day, state);
+    }
+
+    public void setEnabledAtIndex(int index, boolean state) {
+        setEnabledAtDay(mWeekDays[index], state);
     }
 
     public String getMonthName() {
