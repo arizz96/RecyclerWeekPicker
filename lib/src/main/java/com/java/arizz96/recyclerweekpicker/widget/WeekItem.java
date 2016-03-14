@@ -19,6 +19,7 @@ public class WeekItem {
     private Calendar mFirstDayCalendar;
     private SparseBooleanArray mDisabledDays;
     private String mMonthName;
+    private int mSelectedDay = -1;
 
     public WeekItem(Calendar firstDay) {
         mFirstDayCalendar = (Calendar) firstDay.clone();
@@ -75,5 +76,29 @@ public class WeekItem {
                 offset = i;
         }
         return getCalendarByOffset(offset);
+    }
+
+    public void setSelectedDay(int day) {
+        mSelectedDay = day;
+    }
+
+    public void setSelectedIndex(int day) {
+        setSelectedDay(mWeekDays[day]);
+    }
+
+    public int getSelectedDay() {
+        return mSelectedDay;
+    }
+
+    public int getSelectedIndex() {
+        for (int i = 0; i < 7; i++) {
+            if(mWeekDays[i] == getSelectedDay())
+                return i;
+        }
+        return -1;
+    }
+
+    public void resetSelectedDay() {
+        mSelectedDay = -1;
     }
 }
