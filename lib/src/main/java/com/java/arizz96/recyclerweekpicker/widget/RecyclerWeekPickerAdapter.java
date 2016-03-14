@@ -1,7 +1,6 @@
 package com.java.arizz96.recyclerweekpicker.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,9 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             }
 
             if(mWeekList.get(position).getCalendarByOffset(i).compareTo(currentDay) == 0)
-                holder.mWeekDays[i].setBackgroundResource(R.drawable.day_item_name_current_bg);
+                holder.mCurrentDayView[i].setBackgroundResource(R.drawable.day_item_current_bg);
+            else
+                holder.mCurrentDayView[i].setBackgroundResource(0);
         }
     }
 
@@ -129,6 +130,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         View mDayView[] = new View[7];
         TextView mWeekDays[] = new TextView[7];
         TextView mWeekDaysNum[] = new TextView[7];
+        View mCurrentDayView[] = new View[7];
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -147,6 +149,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
                 mDayView[i] = itemView.findViewById(daysIds[i]);
                 mWeekDays[i] = (TextView) mDayView[i].findViewById(R.id.item_day_nameTxv);
                 mWeekDaysNum[i] = (TextView) mDayView[i].findViewById(R.id.item_day_numTxv);
+                mCurrentDayView[i] = mDayView[i].findViewById(R.id.item_day_currentDayView);
             }
         }
     }

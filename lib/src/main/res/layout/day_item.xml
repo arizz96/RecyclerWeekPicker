@@ -29,7 +29,12 @@
 
     </RelativeLayout>
 
-
+    <View
+        android:id="@+id/item_day_currentDayView"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@id/item_day_layout"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
