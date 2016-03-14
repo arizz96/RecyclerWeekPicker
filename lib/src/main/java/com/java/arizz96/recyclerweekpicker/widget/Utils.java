@@ -9,6 +9,8 @@ import java.util.Calendar;
  */
 public class Utils {
 
+    private static final int FIRST_DAY_OF_WEEK = Calendar.MONDAY;
+
     public static ArrayList<WeekItem> getWeeksForMonth(Calendar monthCalendar) {
         ArrayList<WeekItem> weekItems = new ArrayList<>();
 
@@ -38,7 +40,7 @@ public class Utils {
         firstDay.set(Calendar.MINUTE, 0);
         firstDay.set(Calendar.SECOND, 0);
         // reset first day to first of week
-        firstDay.add(Calendar.DAY_OF_MONTH, -firstDay.getFirstDayOfWeek() + 1);
+        setCalendarToFirstDayOfWeek(firstDay);
 
         return new WeekItem(firstDay);
     }
@@ -74,6 +76,11 @@ public class Utils {
             items.add(getWeekForDay(firstDay));
         }
         return items;
+    }
+
+    public static void setCalendarToFirstDayOfWeek(Calendar calendar) {
+        while(calendar.get(Calendar.DAY_OF_WEEK) != FIRST_DAY_OF_WEEK)
+            calendar.add(Calendar.DAY_OF_WEEK, -1);
     }
 
     public static int[] calculateWeekDays(int first_day, int last_day){
