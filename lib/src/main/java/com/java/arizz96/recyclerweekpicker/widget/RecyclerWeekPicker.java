@@ -19,6 +19,8 @@ import java.util.Calendar;
  */
 public class RecyclerWeekPicker extends RelativeLayout {
 
+    private static final int LOADING_OFFSET = 2;
+
     private TextView mMonthTxv;
     private RecyclerViewPager mWeekPickerRvp;
     private onDaySelected mDaySelected;
@@ -52,7 +54,10 @@ public class RecyclerWeekPicker extends RelativeLayout {
     private void setupView() {
         inflateView();
         Calendar currentDay = Calendar.getInstance();
-        ArrayList<WeekItem> weeks = Utils.getWeeksForMonth(currentDay);
+        ArrayList<WeekItem> weeks = new ArrayList<>();
+        weeks.addAll(Utils.getPreviousWeeksForDay(currentDay, LOADING_OFFSET));
+        weeks.add(Utils.getWeekForDay(currentDay));
+        weeks.addAll(Utils.getNextWeeksForDay(currentDay, LOADING_OFFSET));
         RecyclerWeekPickerAdapter.clickInterface listener = new RecyclerWeekPickerAdapter.clickInterface() {
             @Override
             public void onClick(Calendar calendar) {
@@ -65,10 +70,15 @@ public class RecyclerWeekPicker extends RelativeLayout {
         mWeekPickerRvp.setAdapter(adapter);
         mWeekPickerRvp.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
             @Override
-            public void OnPageChanged(int i, int i1) {
-                mMonthTxv.setText(((RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter()).getMonthNameForWeek(i1));
+            public void OnPageChanged(int previous, int current) {
+                mMonthTxv.setText(((RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter()).getMonthNameForWeek(current));
+                if (previous < current)
+                    ((RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter()).addNextWeeks(LOADING_OFFSET);
+                else
+                    ((RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter()).addPreviousWeeks(LOADING_OFFSET);
             }
         });
+        mWeekPickerRvp.scrollToPosition(2);
     }
 
     public void setOnDaySelectedListener(onDaySelected listener) {
