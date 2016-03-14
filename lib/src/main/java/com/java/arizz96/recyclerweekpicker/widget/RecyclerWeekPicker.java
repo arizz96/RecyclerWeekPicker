@@ -78,7 +78,7 @@ public class RecyclerWeekPicker extends RelativeLayout {
                     ((RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter()).addPreviousWeeks(LOADING_OFFSET);
             }
         });
-        mWeekPickerRvp.scrollToPosition(2);
+        mWeekPickerRvp.scrollToPosition(LOADING_OFFSET);
     }
 
     public void setOnDaySelectedListener(onDaySelected listener) {
