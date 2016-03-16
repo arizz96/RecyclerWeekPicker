@@ -109,6 +109,20 @@ public class Utils {
         return days;
     }
 
+    public static int getDayForIndex(int index) {
+        int day = -1;
+        switch (index) {
+            case 0: day = Calendar.MONDAY; break;
+            case 1: day = Calendar.TUESDAY; break;
+            case 2: day = Calendar.WEDNESDAY; break;
+            case 3: day = Calendar.THURSDAY; break;
+            case 4: day = Calendar.FRIDAY; break;
+            case 5: day = Calendar.SATURDAY; break;
+            case 6: day = Calendar.SUNDAY; break;
+        }
+        return day;
+    }
+
     public static String getMonthName(Calendar cal) {
         return new SimpleDateFormat("MMMM").format(cal.getTime());
     }
