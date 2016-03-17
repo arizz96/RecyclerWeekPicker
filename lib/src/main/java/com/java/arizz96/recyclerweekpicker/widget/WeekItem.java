@@ -28,8 +28,9 @@ public class WeekItem {
         Calendar lastDay = (Calendar) mFirstDayCalendar.clone();
         lastDay.add(Calendar.DAY_OF_MONTH, 6);
         String monthName = Utils.getMonthName(mFirstDayCalendar);
+        monthName += String.format(" %d", mFirstDayCalendar.get(Calendar.YEAR));
         String nextMonthName = Utils.getMonthName(lastDay);
-        if(monthName.compareTo(nextMonthName) != 0)
+        nextMonthName += String.format(" %d", lastDay.get(Calendar.YEAR));
             monthName = String.format("%s / %s", monthName, nextMonthName);
 
         mWeekDays = Utils.calculateWeekDays(mFirstDayCalendar.get(Calendar.DAY_OF_MONTH), lastDay.get(Calendar.DAY_OF_MONTH));
