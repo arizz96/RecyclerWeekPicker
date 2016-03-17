@@ -23,6 +23,8 @@ public class WeekItem {
 
     public WeekItem(Calendar firstDay) {
         mFirstDayCalendar = (Calendar) firstDay.clone();
+        if(mFirstDayCalendar.get(Calendar.DAY_OF_WEEK) != Utils.FIRST_DAY_OF_WEEK)
+            Utils.setCalendarToFirstDayOfWeek(mFirstDayCalendar);
         Calendar lastDay = (Calendar) mFirstDayCalendar.clone();
         lastDay.add(Calendar.DAY_OF_MONTH, 6);
         String monthName = Utils.getMonthName(mFirstDayCalendar);
