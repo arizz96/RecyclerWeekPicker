@@ -41,6 +41,14 @@ public class WeekItem {
         return mWeekDays[index];
     }
 
+    public int getDayIndexAtNum(int num) {
+        for (int i = 0; i < 7; i++) {
+            if(mWeekDays[i] == num)
+                return i;
+        }
+        return -1;
+    }
+
     public String getDayNameAtIndex(int index, String format) {
         return Utils.getDayName(index, format);
     }
