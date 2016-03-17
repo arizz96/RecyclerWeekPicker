@@ -60,6 +60,19 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             holder.mWeekDaysNum[i].setText(mWeekList.get(position).getDayNumAtIndex(i) + "");
             holder.mWeekDays[i].setText(mWeekList.get(position).getDayNameAtIndex(i, "E"));
 
+            // disabled case
+            if(mWeekList.get(position).isEnabledAtIndex(i)) {
+                holder.mWeekDaysNum[i].setTextColor(mContext.getResources().getColor(R.color.day_item_enabled_day_color));
+                holder.mWeekDays[i].setTextColor(mContext.getResources().getColor(R.color.day_item_enabled_day_color));
+                holder.itemView.setEnabled(true);
+            } else {
+                holder.mWeekDaysNum[i].setTextColor(mContext.getResources().getColor(R.color.day_item_disabled_day_color));
+                holder.mWeekDays[i].setTextColor(mContext.getResources().getColor(R.color.day_item_disabled_day_color));
+                holder.itemView.setEnabled(false);
+
+            }
+
+            // selection case
             if(mWeekList.get(position).getSelectedIndex() == i) {
                 holder.mWeekDaysNum[i].setBackgroundResource(R.drawable.day_item_num_bg);
                 holder.mWeekDays[i].setBackgroundResource(R.drawable.day_item_name_bg);
@@ -68,6 +81,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
                 holder.mWeekDays[i].setBackgroundResource(0);
             }
 
+            // current day case
             if(mWeekList.get(position).getCalendarByOffset(i).compareTo(currentDay) == 0)
                 holder.mCurrentDayView[i].setBackgroundResource(R.drawable.day_item_current_bg);
             else

@@ -3,4 +3,5 @@
     <color name="day_item_selected_background">#BAECD8</color>
     <color name="day_item_current_day_indicator">#BAECD8</color>
     <color name="day_item_disabled_day_color">#BAECD8</color>
+    <color name="day_item_enabled_day_color">#000</color>
 </resources>
