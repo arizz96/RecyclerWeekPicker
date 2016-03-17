@@ -139,6 +139,35 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         return mWeekList.get(weekNum).getMonthName();
     }
 
+    protected int setSelectedDay(Calendar day) {
+        int offset = 0;
+        boolean found = false;
+        while (!found) {
+            // check if is inside current week
+            if(mWeekList.get(offset).getCalendarByOffset(0).compareTo(day) <= 0 &&
+                    mWeekList.get(offset).getCalendarByOffset(6).compareTo(day) >= 0) {
+                toggleSelection(offset, day.get(Calendar.DAY_OF_MONTH) - mWeekList.get(offset).getFirstDay());
+                found = true;
+            } else {
+                // if next, add weeks and move offset
+                if(mWeekList.get(offset).getCalendarByOffset(6).compareTo(day) < 0) {
+                    offset++;
+                    if (offset >= getItemCount())
+                        addNextWeeks(2);
+                }
+                // if previous, add previous and reset offset to 0
+                else if(mWeekList.get(offset).getCalendarByOffset(0).compareTo(day) > 0) {
+                    offset--;
+                    if(offset < 0) {
+                        addPreviousWeeks(2);
+                        offset += 2;
+                    }
+                }
+            }
+        }
+        return offset;
+    }
+
     public static class ViewHolder extends RecyclerViewPager.ViewHolder {
 
         View mDayView[] = new View[7];
