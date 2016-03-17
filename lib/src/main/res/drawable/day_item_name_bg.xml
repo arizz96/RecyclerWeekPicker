@@ -3,7 +3,7 @@
     <item android:top="25dp">
         <shape android:shape="rectangle">
             <size android:height="4dp" android:width="18dp"/>
-            <solid android:color="#BAECD8"/>
+            <solid android:color="@color/day_item_selected_background"/>
         </shape>
     </item>
 </layer-list>
