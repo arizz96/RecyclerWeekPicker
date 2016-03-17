@@ -104,6 +104,6 @@ public class RecyclerWeekPicker extends RelativeLayout {
     public void setSelectedDay(Calendar day) {
         mSelectedDay = day;
         RecyclerWeekPickerAdapter adapter = (RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter();
-        //adapter.
+        mWeekPickerRvp.scrollToPosition(adapter.setSelectedDay(day));
     }
 }
