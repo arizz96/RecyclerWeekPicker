@@ -89,7 +89,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         }
     }
 
-    public void toggleSelection(int week, int day) {
+    public void toggleSelection(int week, int day, Calendar calendar) {
         if(mWeekList.get(week).isEnabledAtIndex(day)) {
             if(lastSelectedDay != -1 && lastSelectedWeek != -1) {
                 mWeekList.get(lastSelectedWeek).resetSelectedDay();
@@ -99,6 +99,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             lastSelectedDay = day;
             lastSelectedWeek = week;
             notifyItemChanged(week);
+            mDaySelected.onClick(calendar);
         }
     }
 
@@ -146,7 +147,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             // check if is inside current week
             if(mWeekList.get(offset).getCalendarByOffset(0).compareTo(day) <= 0 &&
                     mWeekList.get(offset).getCalendarByOffset(6).compareTo(day) >= 0) {
-                toggleSelection(offset, day.get(Calendar.DAY_OF_MONTH) - mWeekList.get(offset).getFirstDay());
+                toggleSelection(offset, mWeekList.get(offset).getDayIndexAtNum(day.get(Calendar.DAY_OF_MONTH)), day);
                 found = true;
             } else {
                 // if next, add weeks and move offset
