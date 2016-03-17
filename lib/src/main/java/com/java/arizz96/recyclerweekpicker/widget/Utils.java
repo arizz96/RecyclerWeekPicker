@@ -9,7 +9,7 @@ import java.util.Calendar;
  */
 public class Utils {
 
-    private static final int FIRST_DAY_OF_WEEK = Calendar.MONDAY;
+    public static final int FIRST_DAY_OF_WEEK = Calendar.MONDAY;
 
     public static ArrayList<WeekItem> getWeeksForMonth(Calendar monthCalendar) {
         ArrayList<WeekItem> weekItems = new ArrayList<>();
