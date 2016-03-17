@@ -49,12 +49,11 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         currentDay.set(Calendar.MILLISECOND, 0);
 
         for(int i = 0; i < 7; i++){
-            final int offset = i;
+            final Calendar selected = mWeekList.get(position).getCalendarByOffset(i);
             holder.mDayView[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mDaySelected.onClick(mWeekList.get(position).getCalendarByOffset(offset));
-                    toggleSelection(position, offset);
+                    setSelectedDay(selected);
                 }
             });
             holder.mWeekDaysNum[i].setText(mWeekList.get(position).getDayNumAtIndex(i) + "");
