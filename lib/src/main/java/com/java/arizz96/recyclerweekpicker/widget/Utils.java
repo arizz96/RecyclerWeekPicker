@@ -10,6 +10,7 @@ import java.util.Calendar;
 public class Utils {
 
     public static final int FIRST_DAY_OF_WEEK = Calendar.MONDAY;
+    public static final long SECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 
     public static ArrayList<WeekItem> getWeeksForMonth(Calendar monthCalendar) {
         ArrayList<WeekItem> weekItems = new ArrayList<>();
