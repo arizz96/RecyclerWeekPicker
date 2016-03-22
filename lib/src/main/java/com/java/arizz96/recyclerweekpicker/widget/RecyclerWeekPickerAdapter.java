@@ -165,13 +165,10 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
 
-        for (int i = 0; i < getItemCount(); i++) {
-            if(mWeekList.get(i).getCalendarByOffset(0).compareTo(cal) <= 0 &&
-                    mWeekList.get(i).getCalendarByOffset(6).compareTo(cal) >= 0)
-                return i;
-        }
+        long diff = day.getTimeInMillis() - mWeekList.get(0).getCalendarByOffset(0).getTimeInMillis();
+        int weeksDiff = (int)(diff / Utils.SECONDS_IN_WEEK);
 
-        return -1;
+        return weeksDiff;
     }
 
     protected int setSelectedDay(Calendar day) {
