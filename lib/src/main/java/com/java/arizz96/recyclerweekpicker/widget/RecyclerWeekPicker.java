@@ -103,7 +103,11 @@ public class RecyclerWeekPicker extends RelativeLayout {
 
     public void setSelectedDay(Calendar day) {
         mSelectedDay = day;
+        mSelectedDay.set(Calendar.HOUR_OF_DAY, 0);
+        mSelectedDay.set(Calendar.MINUTE, 0);
+        mSelectedDay.set(Calendar.SECOND, 0);
+        mSelectedDay.set(Calendar.MILLISECOND, 0);
         RecyclerWeekPickerAdapter adapter = (RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter();
-        mWeekPickerRvp.scrollToPosition(adapter.setSelectedDay(day));
+        mWeekPickerRvp.scrollToPosition(adapter.setSelectedDay(mSelectedDay));
     }
 }
