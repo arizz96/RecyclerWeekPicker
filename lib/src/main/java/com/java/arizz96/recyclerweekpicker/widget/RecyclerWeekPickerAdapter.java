@@ -21,8 +21,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
     private ArrayList<WeekItem> mWeekList;
     private Context mContext;
     private clickInterface mDaySelected;
-    private static int lastSelectedDay = -1;
-    private static int lastSelectedWeek = -1;
+    private static Calendar lastSelectedDay;
     private TreeMap<Long, Boolean> mDisabledDays;
 
     protected static interface clickInterface {
@@ -94,13 +93,13 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
 
     public void toggleSelection(int week, int day, Calendar calendar) {
         if(getEnabledDayState(calendar)) {
-            if(lastSelectedDay != -1 && lastSelectedWeek != -1) {
-                mWeekList.get(lastSelectedWeek).resetSelectedDay();
-                notifyItemChanged(lastSelectedWeek);
+            if(lastSelectedDay != null) {
+                int weekIndex = getWeekIndexForDay(lastSelectedDay);
+                mWeekList.get(weekIndex).resetSelectedDay();
+                notifyItemChanged(weekIndex);
             }
             mWeekList.get(week).setSelectedIndex(day);
-            lastSelectedDay = day;
-            lastSelectedWeek = week;
+            lastSelectedDay = calendar;
             notifyItemChanged(week);
             mDaySelected.onClick(calendar);
         }
@@ -208,11 +207,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         return new RecyclerWeekPicker.onDayEnableStateChange() {
             @Override
             public void enableStateChanged(Calendar day) {
-                for (int i = 0; i < 4 && i < getItemCount(); i++) {
-                    if(mWeekList.get(i).getCalendarByOffset(0).compareTo(day) <= 0 &&
-                            mWeekList.get(i).getCalendarByOffset(6).compareTo(day) >= 0)
-                        notifyItemChanged(i);
-                }
+                notifyItemChanged(getWeekIndexForDay(day));
             }
         };
     }
