@@ -13,6 +13,7 @@ import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TreeMap;
 
 /**
  * Created by arizz on 11/03/2016.
@@ -25,9 +26,15 @@ public class RecyclerWeekPicker extends RelativeLayout {
     private RecyclerViewPager mWeekPickerRvp;
     private onDaySelected mDaySelected;
     private Calendar mSelectedDay;
+    private TreeMap<Long, Boolean> mDisabledDays;
+    private onDayEnableStateChange mEnabledStateChange;
 
     public static interface onDaySelected {
         void onSelected(Calendar day);
+    }
+
+    protected static interface onDayEnableStateChange {
+        void enableStateChanged(Calendar day);
     }
 
     public RecyclerWeekPicker(Context context) {
@@ -53,6 +60,9 @@ public class RecyclerWeekPicker extends RelativeLayout {
 
     private void setupView() {
         inflateView();
+
+        mDisabledDays = new TreeMap<>();
+
         Calendar currentDay = Calendar.getInstance();
         ArrayList<WeekItem> weeks = new ArrayList<>();
         weeks.addAll(Utils.getPreviousWeeksForDay(currentDay, LOADING_OFFSET));
@@ -62,10 +72,11 @@ public class RecyclerWeekPicker extends RelativeLayout {
             @Override
             public void onClick(Calendar calendar) {
                 getOnDaySelectedListener().onSelected(calendar);
+                mSelectedDay = calendar;
             }
         };
 
-        RecyclerWeekPickerAdapter adapter = new RecyclerWeekPickerAdapter(getContext(), weeks, listener);
+        RecyclerWeekPickerAdapter adapter = new RecyclerWeekPickerAdapter(getContext(), weeks, listener, mDisabledDays);
         mWeekPickerRvp.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mWeekPickerRvp.setAdapter(adapter);
         mWeekPickerRvp.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
@@ -79,6 +90,8 @@ public class RecyclerWeekPicker extends RelativeLayout {
             }
         });
         mWeekPickerRvp.scrollToPosition(LOADING_OFFSET);
+
+        mEnabledStateChange = adapter.getEnabledStateChanged();
     }
 
     public void setOnDaySelectedListener(onDaySelected listener) {
@@ -109,5 +122,36 @@ public class RecyclerWeekPicker extends RelativeLayout {
         mSelectedDay.set(Calendar.MILLISECOND, 0);
         RecyclerWeekPickerAdapter adapter = (RecyclerWeekPickerAdapter) mWeekPickerRvp.getAdapter();
         mWeekPickerRvp.scrollToPosition(adapter.setSelectedDay(mSelectedDay));
+    }
+
+    private void setEnabledDayState(long day, boolean state) {
+        mDisabledDays.put(day, state);
+    }
+
+    public void setEnabledDayState(Calendar day, boolean state) {
+        Calendar cal = (Calendar) day.clone();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        setEnabledDayState(cal.getTimeInMillis(), state);
+        mEnabledStateChange.enableStateChanged(cal);
+    }
+
+    private boolean getEnabledDayState(long day) {
+        if(mDisabledDays.containsKey(day))
+            return mDisabledDays.get(day);
+        else
+            return true;
+    }
+
+    public boolean getEnabledDayState(Calendar day) {
+        Calendar cal = (Calendar) day.clone();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        mEnabledStateChange.enableStateChanged(cal);
+        return getEnabledDayState(cal.getTimeInMillis());
     }
 }

@@ -11,6 +11,7 @@ import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TreeMap;
 
 /**
  * Created by arizz on 12/03/2016.
@@ -22,15 +23,18 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
     private clickInterface mDaySelected;
     private static int lastSelectedDay = -1;
     private static int lastSelectedWeek = -1;
+    private TreeMap<Long, Boolean> mDisabledDays;
 
-    public static interface clickInterface {
+    protected static interface clickInterface {
         void onClick(Calendar calendar);
     }
 
-    public RecyclerWeekPickerAdapter(Context context, ArrayList<WeekItem> weekItems, clickInterface dayListener) {
+    public RecyclerWeekPickerAdapter(Context context, ArrayList<WeekItem> weekItems,
+                                     clickInterface dayListener, TreeMap<Long, Boolean> disabledDays) {
         mWeekList = weekItems;
         mContext = context;
         mDaySelected = dayListener;
+        mDisabledDays = disabledDays;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             holder.mWeekDays[i].setText(mWeekList.get(position).getDayNameAtIndex(i, "E"));
 
             // disabled case
-            if(mWeekList.get(position).isEnabledAtIndex(i)) {
+            if(getEnabledDayState(mWeekList.get(position).getCalendarByOffset(i))) {
                 holder.mWeekDaysNum[i].setTextColor(mContext.getResources().getColor(R.color.day_item_enabled_day_color));
                 holder.mWeekDays[i].setTextColor(mContext.getResources().getColor(R.color.day_item_enabled_day_color));
                 holder.itemView.setEnabled(true);
@@ -89,7 +93,7 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
     }
 
     public void toggleSelection(int week, int day, Calendar calendar) {
-        if(mWeekList.get(week).isEnabledAtIndex(day)) {
+        if(getEnabledDayState(calendar)) {
             if(lastSelectedDay != -1 && lastSelectedWeek != -1) {
                 mWeekList.get(lastSelectedWeek).resetSelectedDay();
                 notifyItemChanged(lastSelectedWeek);
@@ -139,6 +143,22 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
         return mWeekList.get(weekNum).getMonthName();
     }
 
+    private boolean getEnabledDayState(long day) {
+        if(mDisabledDays.containsKey(day))
+            return mDisabledDays.get(day);
+        else
+            return true;
+    }
+
+    private boolean getEnabledDayState(Calendar day) {
+        Calendar cal = (Calendar) day.clone();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return getEnabledDayState(cal.getTimeInMillis());
+    }
+
     protected int setSelectedDay(Calendar day) {
         int offset = 0;
         boolean found = false;
@@ -166,6 +186,19 @@ public class RecyclerWeekPickerAdapter extends RecyclerViewPager.Adapter<Recycle
             }
         }
         return offset;
+    }
+
+    protected RecyclerWeekPicker.onDayEnableStateChange getEnabledStateChanged() {
+        return new RecyclerWeekPicker.onDayEnableStateChange() {
+            @Override
+            public void enableStateChanged(Calendar day) {
+                for (int i = 0; i < 4 && i < getItemCount(); i++) {
+                    if(mWeekList.get(i).getCalendarByOffset(0).compareTo(day) <= 0 &&
+                            mWeekList.get(i).getCalendarByOffset(6).compareTo(day) >= 0)
+                        notifyItemChanged(i);
+                }
+            }
+        };
     }
 
     public static class ViewHolder extends RecyclerViewPager.ViewHolder {
